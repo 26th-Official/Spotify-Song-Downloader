@@ -23,4 +23,6 @@ https://developer.spotify.com/
 
 ### You can change the download location in the commented place.
 
+---------------------------------------------------------------------------------------------------
+
 #### **Thank you!! - Star the repository if you find it usefull and share it with your friends**
