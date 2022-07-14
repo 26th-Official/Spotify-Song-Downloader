@@ -3,7 +3,7 @@ This script can download songs from spotify playlists.
 
 ---------------------------------------------------------------------------------------------------
 
-### Module dependecies for thies script:-
+### Module dependecies for this script:-
 
 - Spotipy
 - urllib
@@ -23,7 +23,12 @@ This script can download songs from spotify playlists.
 
 https://developer.spotify.com/
 
-### You can change the download location in the commented place.
+### You should change the following in the **commented** places:-
+
+- Client ID
+- Client Secret
+- Playlist URL or ID
+- Download Destination Path
 
 ---------------------------------------------------------------------------------------------------
 
