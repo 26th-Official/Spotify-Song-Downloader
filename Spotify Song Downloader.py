@@ -54,7 +54,7 @@ def download(dlink,file):
     video_info = youtube_dl.YoutubeDL().extract_info(
         url = video_url,download=False
     )
-    filename = f"D:\\Spotify Download\\"+file+".mp3"  # Your on destination path here
+    filename = f"D:\\Spotify Download\\"+file+".mp3"  # Your on download destination path here
     options={
         'format':'bestaudio/best',
         'keepvideo':False,
