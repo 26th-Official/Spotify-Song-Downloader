@@ -38,7 +38,7 @@ def songs(index,count):
         print(index,results['items'][count]['track']['name'],"by",results['items'][count]['track']['artists'][0]['name'])
         item1 = results['items'][count]['track']['name']+" by "+results['items'][count]['track']['artists'][0]['name']
         item2 = results['items'][count]['track']['name']
-        item3 = results['items'][count]['track']['album']['images'][1]['url']
+        item3 = results['items'][count]['track']['album']['images'][0]['url']
         item4 = results['items'][count]['track']['artists'][0]['name']
         item5 = results['items'][count]['track']['album']['name']
         

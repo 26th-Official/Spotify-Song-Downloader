@@ -4,8 +4,8 @@ import urllib.request
 import moviepy.editor as mp
 
 
-# clip = mp.AudioFileClip(f"D:\Spotify Download\Black Balloons.mp4")
-# clip.write_audiofile(f"D:\Spotify Download\Black Balloons.mp3")
+clip = mp.AudioFileClip(f"D:\Spotify Download\Black Balloons.mp4")
+clip.write_audiofile(f"D:\Spotify Download\Black Balloons.mp3")
 
 
 audiofile = eyed3.load(f"D:\Spotify Download\Black Balloons.mp3")

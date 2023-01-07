@@ -38,11 +38,13 @@ def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
         if (name+".mp3") not in file_already:
             video.streams.get_audio_only().download(output_path="D:\\Spotify Download\\",filename=name+".mp4")
             
-            # clip = mp.AudioFileClip(f"D:\\Spotify Download\\{name}.mp4")
-            # clip.write_audiofile(f"D:\\Spotify Download\\{name}.mp3")
+            clip = mp.AudioFileClip(f"D:\\Spotify Download\\{name}.mp4")
+            clip.write_audiofile(f"D:\\Spotify Download\\{name}.mp3")
+            
+            os.remove(f"D:\\Spotify Download\\{name}.mp4")
             
             
-            audiofile = eyed3.load(f"D:\\Spotify Download\\{name}.mp4")
+            audiofile = eyed3.load(f"D:\\Spotify Download\\{name}.mp3")
             audiofile.tag.artist = artist_name_
             audiofile.tag.album = album_name_
             audiofile.tag.title = song_name_
@@ -53,9 +55,9 @@ def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
             
             audiofile.tag.save()
             
-            # os.rename(f"D:\\Spotify Download\\{name}.mp4")
-        
-        
+            
+    
+    
         print("--------------------------")
         
     except:
