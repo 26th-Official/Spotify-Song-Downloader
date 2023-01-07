@@ -7,6 +7,9 @@ import os
 import urllib.request
 
 
+base_path = "D:\\Spotify Download\\"
+
+
 songlist = pd.read_csv("songlist.csv")
 
 
@@ -29,17 +32,17 @@ def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
     try:
         print(f'Downloading: {count}')
         name = safe_filename(song_name_)
-        file_already = os.listdir(path= r'D:\Spotify Download')
+        file_already = os.listdir(path= base_path)
         if (name+".mp3") not in file_already:
-            video.streams.get_audio_only().download(output_path="D:\\Spotify Download\\",filename=name+".mp4")
+            video.streams.get_audio_only().download(output_path=base_path,filename=name+".mp4")
             
-            clip = mp.AudioFileClip(f"D:\\Spotify Download\\{name}.mp4")
-            clip.write_audiofile(f"D:\\Spotify Download\\{name}.mp3")
+            clip = mp.AudioFileClip(f"{base_path}{name}.mp4")
+            clip.write_audiofile(f"{base_path}{name}.mp3")
             
-            os.remove(f"D:\\Spotify Download\\{name}.mp4")
+            os.remove(f"{base_path}{name}.mp4")
             
             
-            audiofile = eyed3.load(f"D:\\Spotify Download\\{name}.mp3")
+            audiofile = eyed3.load(f"{base_path}{name}.mp3")
             audiofile.tag.artist = artist_name_
             audiofile.tag.album = album_name_
             audiofile.tag.title = song_name_
