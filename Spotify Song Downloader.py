@@ -1,14 +1,9 @@
 from pytube import YouTube
 from pytube.helpers import safe_filename 
-
 import moviepy.editor as mp
 import eyed3
-
 import pandas as pd
-
-import json
 import os
-
 import urllib.request
 
 
@@ -82,8 +77,5 @@ for i in range(songlist.shape[0]):
 
 print(error)  
 
-with open('error.json', 'w') as f:
-    import json
-    jsonString = json.dumps(list)
-    json.dump(jsonString, f)
+
 

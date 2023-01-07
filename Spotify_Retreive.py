@@ -1,11 +1,10 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import json
-import csv
 import pandas as pd
 
-sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="0beff79223d745cc91bcdc12f85fecd7", # Setup the spotify API and paste the Client ID and Secret here
-                                               client_secret="5e1a4a097300469398dab72c1d51d5f9"))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="-----------------------", # Setup the spotify API and paste the Client ID and Secret here
+                                               client_secret="-------------------------"))
 
 results = sp.playlist_items("3kRZgzHreNfUkqDaZe4r62") # Place your playlist ID or Playlist URL here 
 total = results['total']
