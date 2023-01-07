@@ -1,114 +1,87 @@
-# Module dependecies for thies script are Spotipy,urllib,csv,Youtube_dl,re
-# You can install these by running the following:-
+from pytube import YouTube
+from pytube.helpers import safe_filename 
 
-# pip install spotipy
-# pip install python-csv
-# pip install urllib
-# pip install regex
-# pip install youtube_dl
+import moviepy.editor as mp
+import eyed3
 
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
+import pandas as pd
+
+import json
+import os
+
 import urllib.request
-import re
-import csv
-import youtube_dl
-
-# ----------------------------------------------------
-
-sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="------------------------------------", # Setup the spotify API and paste the Client ID and Secret here
-                                               client_secret="----------------------------------"))
-
-results = sp.playlist_items("3kRZgzHreNfUkqDaZe4r62") # Place your playlist ID or Playlist URL here 
-total = results['total']
-
-# ----------------------------------------------------
-
-count = 0
-index = 0
-looprange = 0
-totalrange= (total//100)+1
-
-song =[]
-song_name = []
-links = []
-
-# ----------------------------------------------------
-
-def songs(index,count):
-    temp = 100
-    if totalrange-looprange==1:
-        temp = total%100
-    for i in range(temp):
-        print(index,results['items'][count]['track']['name'],"by",results['items'][count]['track']['artists'][0]['name'])
-        item1 = results['items'][count]['track']['name']+" by "+results['items'][count]['track']['artists'][0]['name']
-        item2 = results['items'][count]['track']['name']
-        song.append(item1)
-        song_name.append(item2)
-        count = count+1
-        index = index+1
-    count = 0
-
-def download(dlink,file):
-    video_url = dlink
-    video_info = youtube_dl.YoutubeDL().extract_info(
-        url = video_url,download=False
-    )
-    filename = f"D:\\Spotify Download\\"+file+".mp3"  # Your on download destination path here
-    options={
-        'format':'bestaudio/best',
-        'keepvideo':False,
-        'outtmpl':filename,
-    }
-
-    with youtube_dl.YoutubeDL(options) as ydl:
-        ydl.download([video_info['webpage_url']])
-
-    print("Download complete... {}".format(filename))
-
-# ----------------------------------------------------
-
-for i in range(totalrange):
-    songs(index,count)
-    index = index+100
-    looprange = looprange+1
-    results = sp.next(results)
 
 
-with open('song.csv','w',encoding="utf_8") as o:
-    writer = csv.writer(o)
-    writer.writerow(song)
-print("\n\n##################################################")
-print("Songs lists Gathered!!")
-print("\n##################################################")
-
-# ----------------------------------------------------
-
-for i in song:
-    query = i
-    org_query = urllib.parse.quote(query.replace(" ","+"))
-    html = urllib.request.urlopen("https://www.youtube.com/results?search_query="+org_query)
-    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
-    video_id = "https://www.youtube.com/watch?v="+video_ids[0]
-    links.append(video_id)
-    print(i,video_id)
-
-with open('link.csv','w',encoding="utf_8") as o:
-    writer = csv.writer(o)
-    writer.writerow(links)
-print("\n\n##################################################")
-print("\nSong URLs Gathered!!")
-print("\n##################################################")
-
-# ----------------------------------------------------
-
-print("\n\n---------------------------------------------------")
-print("\nDownload Starting:- ")
-print("\n---------------------------------------------------")
-for i in range(len(links)):
-    file = song_name[i]
-    dlink = links[i]
-    download(dlink,file)
+songlist = pd.read_csv("songlist.csv")
 
 
+queryname = songlist["queryname"].values.tolist()
+song_name = songlist["song_name"].values.tolist()
+artist_name = songlist["artist_name"].values.tolist()
+album_name = songlist["album_name"].values.tolist()
+links = songlist["link"].values.tolist()
+thumbnail = songlist["thumbnail"].values.tolist()
+
+
+
+error = []    
+
+    
+def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
+    video = YouTube(links_) 
+
+
+    try:
+        print(f'Downloading: {count}')
+        name = safe_filename(song_name_)
+        file_already = os.listdir(path= r'D:\Spotify Download')
+        if (name+".mp3") not in file_already:
+            video.streams.get_audio_only().download(output_path="D:\\Spotify Download\\",filename=name+".mp4")
+            
+            # clip = mp.AudioFileClip(f"D:\\Spotify Download\\{name}.mp4")
+            # clip.write_audiofile(f"D:\\Spotify Download\\{name}.mp3")
+            
+            
+            audiofile = eyed3.load(f"D:\\Spotify Download\\{name}.mp4")
+            audiofile.tag.artist = artist_name_
+            audiofile.tag.album = album_name_
+            audiofile.tag.title = song_name_
+            
+            response = urllib.request.urlopen(thumbnail_)
+            imagedata = response.read()
+            audiofile.tag.images.set(3, imagedata, "image/jpeg", u"cover")
+            
+            audiofile.tag.save()
+            
+            # os.rename(f"D:\\Spotify Download\\{name}.mp4")
+        
+        
+        print("--------------------------")
+        
+    except:
+        print("**************************")
+        
+        error.append({"Error":[song_name_,links_]})
+        print("Error Happened")
+        
+        print("**************************")
+  
+count = 1  
+for i in range(songlist.shape[0]):
+ 
+    song_name_ = song_name[i]
+    artist_name_ = artist_name[i]
+    album_name_ = album_name[i]
+    links_ = links[i]
+    thumbnail_ = thumbnail[i]
+    
+    download(links_,song_name_,artist_name_,album_name_,thumbnail_,count)
+    count+=1
+
+print(error)  
+
+with open('error.json', 'w') as f:
+    import json
+    jsonString = json.dumps(list)
+    json.dump(jsonString, f)
 
