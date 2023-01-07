@@ -7,7 +7,7 @@ import os
 import urllib.request
 
 
-base_path = "D:\\Spotify Download\\"
+base_path = "D:\\Spotify Download\\" # Enter the Destination location here
 
 
 songlist = pd.read_csv("songlist.csv")

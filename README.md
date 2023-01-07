@@ -7,21 +7,27 @@ This script can download songs from spotify playlists.
 
 - Spotipy
 - urllib
-- csv
-- Youtube_dl
-- regex
+- pytube
+- eyed3
+- pandas
 
 ### You can install these by running the following:-
 
 - pip install spotipy
-- pip install python-csv
 - pip install urllib
-- pip install regex
-- pip install youtube_dl
+- pip install moviepy
+- pip install pytube
+- pip install eyed3
+- pip install pandas
 
 ### Get the Client ID and Client Secret from Spotify Developer page here
 
 https://developer.spotify.com/
+
+### You should change the following in the **commented** places:-
+
+- Run the **Spotify_Retreive.py** first
+- Then, Run the **Spotify Song Downloader.py** first
 
 ### You should change the following in the **commented** places:-
 
