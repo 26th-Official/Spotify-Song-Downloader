@@ -27,7 +27,7 @@ https://developer.spotify.com/
 ### You should change the following in the **commented** places:-
 
 - Run the **Spotify_Retreive.py** first
-- Then, Run the **Spotify Song Downloader.py** first
+- Then, Run the **Spotify Song Downloader.py**
 
 ### You should change the following in the **commented** places:-
 
