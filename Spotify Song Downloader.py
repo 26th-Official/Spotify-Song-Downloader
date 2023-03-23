@@ -1,4 +1,5 @@
 from pytube import YouTube
+from pytube import Search
 from pytube.helpers import safe_filename 
 import moviepy.editor as mp
 import eyed3
@@ -7,7 +8,7 @@ import os
 import urllib.request
 
 
-base_path = "D:\\Spotify Download\\" # Enter the Destination location here
+base_path = "D:\\Songs\\V2\\Spotify Download\\" # Enter the Destination location here
 
 
 songlist = pd.read_csv("songlist.csv")
@@ -17,8 +18,8 @@ queryname = songlist["queryname"].values.tolist()
 song_name = songlist["song_name"].values.tolist()
 artist_name = songlist["artist_name"].values.tolist()
 album_name = songlist["album_name"].values.tolist()
-links = songlist["link"].values.tolist()
 thumbnail = songlist["thumbnail"].values.tolist()
+links = songlist["links"].values.tolist()
 
 
 
@@ -27,13 +28,11 @@ error = []
     
 def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
     video = YouTube(links_) 
-
-
     try:
-        print(f'Downloading: {count}')
         name = safe_filename(song_name_)
         file_already = os.listdir(path= base_path)
         if (name+".mp3") not in file_already:
+            print(f'Downloading: {count} - {name} - {links_}')
             video.streams.get_audio_only().download(output_path=base_path,filename=name+".mp4")
             
             clip = mp.AudioFileClip(f"{base_path}{name}.mp4")
@@ -53,16 +52,24 @@ def download(links_,song_name_,artist_name_,album_name_,thumbnail_,count):
             
             audiofile.tag.save()
             
+            if (name+".mp3") not in os.listdir(path= base_path):
+                print("Error Happened")
+                error.append({"Error":[song_name_,links_]})
+                print({"Error":[song_name_,links_]})
+
+        
+        else:
+            print(f"Already Exists - {count}")
             
-    
     
         print("--------------------------")
         
-    except:
+    except Exception as e:
         print("**************************")
-        
+        print(e)
         error.append({"Error":[song_name_,links_]})
         print("Error Happened")
+        print({"Error":[song_name_,links_]})
         
         print("**************************")
   
@@ -72,8 +79,8 @@ for i in range(songlist.shape[0]):
     song_name_ = song_name[i]
     artist_name_ = artist_name[i]
     album_name_ = album_name[i]
-    links_ = links[i]
     thumbnail_ = thumbnail[i]
+    links_ = links[i]
     
     download(links_,song_name_,artist_name_,album_name_,thumbnail_,count)
     count+=1

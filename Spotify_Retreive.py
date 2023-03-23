@@ -2,9 +2,10 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import json
 import pandas as pd
+from pytube import Search
 
-sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="-----------------------", # Setup the spotify API and paste the Client ID and Secret here
-                                               client_secret="-------------------------"))
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="-----------------------------", # Setup the spotify API and paste the Client ID and Secret here
+                                               client_secret="--------------------------------"))
 
 results = sp.playlist_items("3kRZgzHreNfUkqDaZe4r62") # Place your playlist ID or Playlist URL here 
 total = results['total']
@@ -41,12 +42,16 @@ def songs(index,count):
         item4 = results['items'][count]['track']['artists'][0]['name']
         item5 = results['items'][count]['track']['album']['name']
         
+        s = Search(item1)
+        url = s.results[0].__dict__["watch_url"]
+        
         
         queryname.append(item1)
         song_name.append(item2)
         thumbnail.append(item3)
         album_name.append(item5)
         artist_name.append(item4)
+        links.append(url)
         
         count = count+1
         index = index+1
@@ -68,7 +73,6 @@ links = pd.DataFrame(links,columns=["links"])
 thumbnail = pd.DataFrame(thumbnail,columns=["thumbnail"])
 
 print("=================================================")
-links = pd.read_csv("link.csv",index_col=False)
 final = pd.concat([song_name,artist_name,album_name,thumbnail,links,queryname],axis=1)
 print(final.head())
 print("=================================================")
